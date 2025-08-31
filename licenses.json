@@ -1,12 +1,11 @@
 {
-  "licenses": [
-    {
-      "userId": "12345678",
-      "product": "SuperSword"
-    },
-    {
-      "userId": "87654321",
-      "product": "MagicShield"
-    }
-  ]
+  "12345678": {
+    "products": ["ProductA", "ProductB"]
+  },
+  "87654321": {
+    "products": ["ProductA"]
+  },
+  "13579246": {
+    "products": []
+  }
 }
