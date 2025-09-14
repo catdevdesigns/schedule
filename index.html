@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact Form</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <h1>Contact Us</h1>
+  <form id="contactForm">
+    <input type="text" id="name" placeholder="Your Name" required /><br /><br />
+    <textarea id="message" placeholder="Your Message" required></textarea><br /><br />
+    <button type="submit">Send</button>
+  </form>
+
+  <script>
+    // Initialize Supabase client
+    const supabaseUrl = 'https://mrhpzlverdybimwbnuvp.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yaHB6bHZlcmR5Ymltd2JudXZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1MjgyMzksImV4cCI6MjA3MzEwNDIzOX0.3iw8xiv7G0Oq56_RGN7WdUYCAvv4GVzXPskfaLfj2SY';
+
+    const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+    // Form submission handler
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !message) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('messages')
+        .insert([{ name, message }]);
+
+      if (error) {
+        console.error('Error inserting message:', error);
+        alert('Failed to send message. Please try again.');
+      } else {
+        alert('Message sent successfully!');
+        form.reset();
+      }
+    });
+  </script>
+</body>
+</html>
