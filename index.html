@@ -56,7 +56,7 @@
     const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yaHB6bHZlcmR5Ymltd2JudXZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1MjgyMzksImV4cCI6MjA3MzEwNDIzOX0.3iw8xiv7G0Oq56_RGN7WdUYCAvv4GVzXPskfaLfj2SY';
 
     // Initialize Supabase client with a different variable name
-    const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
+    const supabaseClient = Supabase.createClient(supabaseUrl, supabaseAnonKey);
 
     const form = document.getElementById('contactForm');
 
