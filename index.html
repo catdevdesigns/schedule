@@ -2,49 +2,89 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Contact Form</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact Form with Supabase</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    label, input, textarea, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+    input, textarea {
+      padding: 8px;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    button:hover {
+      background-color: #2563eb;
+    }
+  </style>
 </head>
 <body>
+
   <h1>Contact Us</h1>
   <form id="contactForm">
-    <input type="text" id="name" placeholder="Your Name" required /><br /><br />
-    <textarea id="message" placeholder="Your Message" required></textarea><br /><br />
-    <button type="submit">Send</button>
+    <label for="name">Your Name</label>
+    <input id="name" name="name" type="text" required />
+
+    <label for="message">Your Message</label>
+    <textarea id="message" name="message" rows="4" required></textarea>
+
+    <button type="submit">Send Message</button>
   </form>
 
+  <!-- Load Supabase JS client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+
   <script>
-    // Initialize Supabase client
+    // Your Supabase project URL and anon key
     const supabaseUrl = 'https://mrhpzlverdybimwbnuvp.supabase.co';
     const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yaHB6bHZlcmR5Ymltd2JudXZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1MjgyMzksImV4cCI6MjA3MzEwNDIzOX0.3iw8xiv7G0Oq56_RGN7WdUYCAvv4GVzXPskfaLfj2SY';
 
-    const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+    // Initialize Supabase client with a different variable name
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-    // Form submission handler
     const form = document.getElementById('contactForm');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
 
-      const name = document.getElementById('name').value.trim();
-      const message = document.getElementById('message').value.trim();
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const name = form.name.value.trim();
+      const message = form.message.value.trim();
 
       if (!name || !message) {
-        alert('Please fill in all fields.');
+        alert('Please fill in both fields.');
         return;
       }
 
-      const { data, error } = await supabase
+      // Insert the message into 'messages' table
+      const { data, error } = await supabaseClient
         .from('messages')
         .insert([{ name, message }]);
 
       if (error) {
-        console.error('Error inserting message:', error);
-        alert('Failed to send message. Please try again.');
+        console.error('Error:', error);
+        alert('Oops, something went wrong. Please try again.');
       } else {
         alert('Message sent successfully!');
         form.reset();
       }
     });
   </script>
+
 </body>
 </html>
